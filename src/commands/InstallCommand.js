@@ -24,8 +24,7 @@
 			for(each in dependencies){
 				if(dependencies.hasOwnProperty(each)){
 					name = dependencies[each].getName();
-					arry = [];
-					arry.push(name, result);
+					arry = [name, result];
 					InstallCommand.call(InstallCommand, arry	);
 				}
 			}
@@ -36,8 +35,6 @@
 			result.put(currentName, currentName + " is already installed");
 		}
 		return result.values().join("\n").concat("\n");
-
 	}
-
 	module.exports = InstallCommand;
 })();

@@ -25,8 +25,7 @@
 				if(dependencies.hasOwnProperty(each)){
 					name = dependencies[each].getName() ;
 					dependencies[each].removeDependant(current);
-					arry = [];
-					arry.push(name, result);
+					arry = [name, result];
 					RemoveCommand.call(RemoveCommand, arry );
 					current.setInstalled(false);
 				}

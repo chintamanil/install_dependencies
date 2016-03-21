@@ -23,8 +23,7 @@
 		      	expect(command.execute("DEPEND A B C D E")  ).to.equal("");
 		    	});
 
-			it("Install module & its dependencies", function() {
-				command.execute("DEPEND A B C D E");
+			it("INSTALL module & its dependencies", function() {
 				var expectedResult = "E successfully installed"+ "\n" +
 										"D successfully installed"+ "\n" +
 										"C successfully installed"+ "\n" +
@@ -34,23 +33,18 @@
 		    	});
 
 			it("execute LIST Command", function() {
-				command.execute("DEPEND A B C D E");
-				command.execute("DEPEND ZZ AA BB CC");
+				command.execute("DEPEND ZZ AA BB C");
 				command.execute("INSTALL A");
 				var expectedResult = "A"+ "\n" +
 										"B"+ "\n" +
 										"C"+ "\n" +
 										"D"+ "\n" +
-										"E" ;
+										"E" + "\n" ;
 		      	expect( command.execute("LIST")  ).to.equal(expectedResult);
 		    	});
 
 			it("execute REMOVE Command", function() {
-				command.execute("DEPEND A B C D E");
-				command.execute("DEPEND ZZ AA BB C");
-				command.execute("INSTALL A");
 				var expectedResult = "C is still Needed";
-
 		      	expect( command.execute("REMOVE C")  ).to.equal(expectedResult);
 		    	});
 		});

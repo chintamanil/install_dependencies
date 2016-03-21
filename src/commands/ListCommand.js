@@ -23,7 +23,7 @@
 				installed.push(	dependencyMap[each].getName()	);
 			}
 		}
-		return installed.join('\n');
+		return installed.join('\n').concat("\n");
 	}
 
 	// var map = new LinkedHashMap();
