@@ -1,0 +1,21 @@
+{
+  "name": "Install_Dependancy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "hashset": "0.0.6",
+    "jslint": "^0.9.6",
+    "linkedlist": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
