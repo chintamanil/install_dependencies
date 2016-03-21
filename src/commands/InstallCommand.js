@@ -16,7 +16,7 @@
 		var result = args[1] || new LinkedHashMap();
 		var current = BaseModule().getInstance( args[0] );
 		var currentName = current.getName();
-		var dependencies, name, each;
+		var dependencies, name, each ,arry;
 		if(! current.isInstalled() ){
 			current.setInstalled(true);
 
@@ -24,7 +24,7 @@
 			for(each in dependencies){
 				if(dependencies.hasOwnProperty(each)){
 					name = dependencies[each].getName();
-					var arry = [];
+					arry = [];
 					arry.push(name, result);
 					InstallCommand.call(InstallCommand, arry	);
 				}

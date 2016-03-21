@@ -10,11 +10,14 @@
     "express": "^4.13.4",
     "hashset": "0.0.6",
     "jslint": "^0.9.6",
-    "linkedlist": "^1.0.1"
+    "linkedlist": "^1.0.1",
+    "mocha": "^2.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js"
   },
   "author": "",
   "license": "ISC"
