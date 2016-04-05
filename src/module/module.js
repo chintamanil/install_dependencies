@@ -1,156 +1,138 @@
-(function () {
-	//Node modules
-	var HashSet = require("hashset");
+(function() {
+    // Node modules
+    var HashSet = require('hashset');
 
-	//private var
-	var dependencyMap = {} ;
+    // private var
+    var dependencyMap = {};
 
-	/**
-	 * Created by IntelliJ IDEA.
-	 * User: manil
-	 * Date : 22/3/2016
-	 * Abstract module to access dependencyMap
-	 */
-	function BaseModule (){
-		return {
-			map : function(){
-				return dependencyMap;
-			},
-			getInstance: function(name){
-				if( dependencyMap[name] ){
-					return dependencyMap[name];
-				}
-				else
-					return false;
-			}
-		};
-	}
+   /**
+    * [BaseModule Abstract module to access dependencyMap]
+    */
+    function BaseModule() {
+        return {
+            map: function() {
+                return dependencyMap;
+            },
+            getInstance: function(name) {
+                if (dependencyMap[name]) {
+                    return dependencyMap[name];
+                }
+                return false;
+            }
+        };
+    }
 
+   /**
+    * [Module  :to crete instance based on name.]
+    *
+    * @param {[string]} name [name of dependency]
+    */
+    function Module(name) {
+        if (!dependencyMap[name]) {
+            this.name = name;
 
-	/**
-	 * Created by IntelliJ IDEA.
-	 * User: manil
-	 * Date : 22/3/2016
-	 *  Module to crete instance based on name.
-	 */
-	function Module(name){
-		if(! dependencyMap[name]){
-			this.name = name;
-			// _ is sudo private  can use closure for real private instead of using closure
-			// which uses more momory
-			this._  = {
-			"installed"  : false,
-			"dependencies" : new HashSet(),
-			"depandants" : new HashSet()
-			};
+            //  _ is sudo private  can use closure for real private instead of using closure
+            this._ = {
+                'installed': false,
+                'dependencies': new HashSet(),
+                'depandants': new HashSet()
+            };
 
-			//this is how closure can be used
-			// this.addDependancies = function(dependancy){
-			// 	return dependencies.add(dependancy);
-			// }
+            dependencyMap[name] = this;
+        }
+        return dependencyMap[name];
+    }
 
-			// this.getDependants = function(){
-			// 	return dependants;
-			// }
+    Module.prototype = {
+        getInstance: function(name) {
+            // check name type
+            var target = dependencyMap[name];
+            if (!target) {
+                target = new Module(name);
+                dependencyMap[name] = target;
+            }
+            return target;
+        },
 
-			dependencyMap[name] = this;
-		}
-		else
-			return dependencyMap[name];
+        getName: function() {
+            return this.name;
+        },
 
-	}
+        isInstalled: function() {
+            return this._.installed;
+        },
 
-	Module.prototype = {
-		getInstance : function(name){
-			//check name type
-			var target = dependencyMap[name];
-			if(! target){
-				target = new Module(name);
-				dependencyMap[name] = target;
-			}
-			return target;
-		},
+        setInstalled: function(value) {
+            // check type
+            this._.installed = value;
+        },
 
-		getName : function(){
-			return this.name;
-		},
+        getDependencies: function() {
+            return this._.dependencies.toArray();
+        },
 
-		isInstalled : function(){
-			return this._.installed;
-		},
+        hasDependencies: function() {
+            return this._.dependencies.length > 0;
+        },
 
-		setInstalled: function(value){
-			//check type
-			this._.installed = value;
-		},
+        addDependancy: function(dependancy) {
+            return this._.dependencies.add(dependancy);
+        },
 
-		getDependencies : function(){
-			return this._.dependencies.toArray();
-		},
+        getDependants: function() {
+            return this._.depandants;
+        },
 
-		hasDependencies : function(){
-			return this._.dependencies.length > 0;
-		},
+        hasDependants: function() {
+            return this._.depandants.length > 0;
+        },
 
-		addDependancy : function(dependancy){
-			return this._.dependencies.add(dependancy);
-		},
+        addDependants: function(dependant) {
+            return this._.depandants.add(dependant);
+        },
 
-		getDependants : function(){
-			return this._.depandants;
-		},
+        removeDependant: function(val) {
+            return this._.depandants.remove(val);
+        },
 
-		hasDependants : function(){
-			return this._.depandants.length > 0;
-		},
+        equals: function(obj) {
+            //  check type of Modlule
+            return this.name === obj.name;
+        },
 
-		addDependants : function(dependant){
-			return this._.depandants.add(dependant);
-		},
+        toString: function() {
+            return this.name;
+        },
 
-		removeDependant: function(val){
-			return this._.depandants.remove(val);
-		},
+        getAllDependancies: function() {
+            return this._.dependencies.toArray();
+        },
 
-		equals : function(obj){
-			//check type of Modlule
-			return this.name === obj.name;
-		},
+        getAllDependants: function() {
+            return this._.dependants.toArray();
+        },
 
-		toString : function(){
-			return this.name;
-		},
+        getAll: function() {
+            return dependencyMap;
+        },
 
-		getAllDependancies : function(){
-			return this._.dependencies.toArray();
-		},
+        getInstalled: function() {
+            var installed = [];
+            var each;
+            for (each in dependencyMap) {
+                if (dependencyMap[each].isInstalled()) {
+                    installed.push(dependencyMap[each].name);
+                }
+            }
+            return installed;
+        }
 
-		getAllDependants : function(){
-			return this._.dependants.toArray();
-		},
+    };
 
-		getAll : function(){
-		return dependencyMap;
-		},
+    module.exports = {
+        Module: Module,
+        BaseModule: BaseModule
 
-		getInstalled : function(){
-			var installed = [];
-			for (var each in dependencyMap){
-				if(dependencyMap[each].isInstalled()){
-					installed.push(dependencyMap[each].name);
-				}
-			}
-			return installed;
-		}
-
-	};
-
-
-
-	module.exports = {
-		Module 		: 	Module,
-		BaseModule	: 	BaseModule
-
-	};
+    };
 
 })();
